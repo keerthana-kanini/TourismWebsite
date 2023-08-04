@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars } from '@fortawesome/free-solid-svg-icons';
-import './Home.css';
 import Photo from '../src/source/photo.jpg';
 import Photo1 from '../src/source/photo2.jpg';
 import Photo3 from '../src/source/photo3.jpg';
@@ -17,46 +16,61 @@ import rajasthan from '../src/source/rajasthan.jpg';
 import travelling from '../src/source/travelling.png';
 import varanasi from '../src/source/varanasi.jpg';
 import axios from 'axios';
-
 const GalleryItem = ({ imageSrc, title, description }) => {
-    return (
-      <div className="box">
-        <div className="image">
-          <img src={imageSrc} alt="" />
-        </div>
-        <div className="content">
-          <h3>{title}</h3>
-          <p>{description}</p>
-          <a href="#">
-            <button className="btn">explore!</button>
-          </a>
-        </div>
+  return (
+    <div className="box">
+      <div className="image">
+        <img src={imageSrc} alt="" />
       </div>
-    );
+      <div className="content">
+        <h3>{title}</h3>
+        <p>{description}</p>
+        <a href="#">
+          <button className="btn">explore!</button>
+        </a>
+      </div>
+    </div>
+  );
+};
+
+
+const roundToHalfStar = (rating) => {
+  return Math.round(rating * 2) / 2;
+};
+
+const Home = () => {
+  const [isNavbarOpen, setNavbarOpen] = useState(false);
+  const [galleryData, setGalleryData] = useState([]);
+  const [places, setPlaces] = useState([]);
+
+  const toggleNavbar = () => {
+    setNavbarOpen(!isNavbarOpen);
   };
-  
-  export default function Home() {
-    const [isNavbarOpen, setNavbarOpen] = useState(false);
-    const [galleryData, setGalleryData] = useState([]);
-  
-    const toggleNavbar = () => {
-      setNavbarOpen(!isNavbarOpen);
+
+  const fetchPlaces = async () => {
+    try {
+      const response = await axios.get('https://localhost:7125/api/Agency');
+      setPlaces(response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  useEffect(() => {
+    // Fetch data from the API
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('https://localhost:7125/api/AdminPosts'); // Change the URL here
+        setGalleryData(response.data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     };
+
+    fetchData();
+    fetchPlaces(); // Call fetchPlaces to populate places state
+  }, []);
     
-  
-    useEffect(() => {
-      // Fetch data from the API
-      const fetchData = async () => {
-        try {
-          const response = await axios.get('https://localhost:7125/api/Agency');
-          setGalleryData(response.data);
-        } catch (error) {
-          console.error('Error fetching data:', error);
-        }
-      };
-  
-      fetchData();
-    }, []);
 
   return (
     
@@ -112,75 +126,51 @@ const GalleryItem = ({ imageSrc, title, description }) => {
           </div>
         </div>
       </section>
-      <section className="feature" id="feature">
-        <h1 className="heading">popular places</h1>
-        <h3 className="title">see the most featured places</h3>
+     <section className="feature" id="feature">
+      <h1 className="heading">Popular Places</h1>
+      <h3 className="title">See the most featured places</h3>
 
-        <div className="card-container">
-
-          <div className="card">
-            <img src={Photo} alt="" />
-            <div className="info">
-              <h3>tour 1-Manali</h3>
-              <div className="stars">
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
+      <div className="card-container">
+        {places.map(place => {
+          const rating = roundToHalfStar(parseFloat(place.Agency_Rating)); // Parse the rating and round it to the nearest half-star
+          return (
+            <div className="card" key={place.Agency_Id}>
+              <img src={`https://localhost:7125/uploads/images/${place.tourImagePath}`} alt="" />
+              <div className="info">
+                <h3>{place.agency_Name}</h3>
+                {/* Assuming Agency_Rating is a number, we can display stars based on that */}
+                <div className="stars">
+                  {Array.from({ length: 5 }, (_, index) => (
+                    <i
+                      className={`fas fa-star${index + 1 <= rating ? '' : '-half'}`}
+                      key={index}
+                    ></i>
+                  ))}
+                </div>
+                <p>{place.tour_place}, where {place.tour_place === 'Goa' ? 'the sun, sand, and sea come together' : 'the mountains meet the skies'}, creating a scenic escape for the soul.</p>
+                <a href="#"><button className="btn">Visit now!</button></a>
               </div>
-              <p>Manali, where the mountains meet the skies, creating a scenic escape for the soul.</p>
-              <a href="#"><button className="btn">visit now!</button></a>
             </div>
-          </div>
-
-          <div className="card">
-            <img src={Photo1} alt="" />
-            <div className="info">
-              <h3>tour 2- Goa</h3>
-              <div className="stars">
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-              </div>
-              <p>Goa, where the sun, sand, and sea come together to create a paradise on earth.</p>
-              <a href="#"><button className="btn">visit now!</button></a>
-            </div>
-          </div>
-          <div className="card">
-            <img src={Photo3} alt="" />
-            <div className="info">
-              <h3>tour 3-Bali</h3>
-              <div className="stars">
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star-half"></i>
-              </div>
-              <p>Bali, where the beauty of nature and rich cultural heritage come together in perfect harmony.</p>
-              <a href="#"><button className="btn">visit now!</button></a>
-            </div>
-          </div>
-        </div>
-      </section>
+          );
+        })}
+      </div>
+    </section>
       
-      <section className="gallery" id="gallery">
-        <h1 className="heading">our gallery</h1>
-        <h3 className="title">explore the most visited places</h3>
+    <section className="gallery" id="gallery">
+      <h1 className="heading">our gallery</h1>
+      <h3 className="title">explore the most visited places</h3>
 
-        <div className="box-container">
-          {galleryData.map((item) => (
-            <GalleryItem
-              key={item.agency_Id}
-              imageSrc={`https://localhost:7125/uploads/images/${item.tourImagePath}`}
-              title={item.agency_Name}
-              description={item.tour_place}
-            />
-          ))}
-        </div>
-      </section>
+      <div className="box-container">
+        {galleryData.map((item) => (
+          <GalleryItem
+            key={item.place_Id} // Assuming that "place_Id" is the unique identifier for each place
+            imageSrc={`https://localhost:7125/uploads/images/${item.placeImagePath}`} // Change the imageSrc prop
+            title={item.place_name} // Change the title prop
+            description={`${item.place_name} -  The perfect getaway for nature enthusiasts. Surround yourself with lush greenery and enjoy outdoor activities all year round in ${item.place_name}.`} // Concatenating the place_name with additional content
+          />
+        ))}
+      </div>
+    </section>
       <section className="review" id="review">
         <h1 className="heading">customers review</h1>
         <h3 className="title">what peoples say about us</h3>
@@ -935,3 +925,5 @@ const GalleryItem = ({ imageSrc, title, description }) => {
     
   );
 }
+
+export default Home;

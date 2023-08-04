@@ -4,7 +4,7 @@ import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
 
-function AdminLogin() {
+function UserLogin() {
     const [isSignInActive, setIsSignInActive] = useState(true);
   
     const toggleForm = () => {
@@ -396,4 +396,4 @@ function AdminLogin() {
   );
 }
 
-export default AdminLogin;
+export default UserLogin;
