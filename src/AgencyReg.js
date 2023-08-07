@@ -24,23 +24,25 @@ const AgencyReg = () => {
         agent_Password: password,
       };
 
-        const response = await axios.post(`${variables.API_URL}Token/Agent`, signInData);
-        if (response.status === 200) {
-            // Successful sign-in, store the token and display a success message
-            const token = response.data; // Assuming the token is returned in the response
-            console.log('Token:', token);
-            toast.success('Sign In Successful!');
-            navigate('/AgentPage');
-          } else {
-            // Handle other possible responses or error messages
-            toast.error('Sign In Failed! Please try again.');
-          }
-        } catch (error) {
-          // Handle any error that might occur during the API call
-          console.error('Error during sign-in:', error);
-          toast.error('An error occurred. Please try again later.');
-        }
-      };
+      const response = await axios.post(`${variables.API_URL}Token/Agent`, signInData);
+      if (response.status === 200) {
+        // Successful sign-in, store the token and display a success message
+        const token = response.data; // Assuming the token is returned in the response
+        localStorage.setItem('token', token); // Store the token in local storage
+        console.log('Token:', token);
+
+        toast.success('Sign In Successful!');
+        navigate('/AgentPage');
+      } else {
+        // Handle other possible responses or error messages
+        toast.error('Sign In Failed! Please try again.');
+      }
+    } catch (error) {
+      // Handle any error that might occur during the API call
+      console.error('Error during sign-in:', error);
+      toast.error('An error occurred. Please try again later.');
+    }
+  };
 
       const handleSignUpSubmit = async (event) => {
         event.preventDefault();

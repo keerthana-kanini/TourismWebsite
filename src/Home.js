@@ -47,6 +47,7 @@ const Home = () => {
   const [galleryData, setGalleryData] = useState([]);
   const [places, setPlaces] = useState([]);
   const [feedbackData, setFeedbackData] = useState([]);
+  const token =localStorage.getItem('userToken');
 
   const toggleNavbar = () => {
     setNavbarOpen(!isNavbarOpen);
@@ -65,8 +66,13 @@ const Home = () => {
     // Fetch data from the API
     const fetchData = async () => {
       try {
-        const response = await axios.get('https://localhost:7125/api/AdminPosts'); // Change the URL here
+        const response = await axios.get('https://localhost:7125/api/AdminPosts',{
+          headers:{
+            Authorization:`Bearer ${token}`
+          }
+        }); // Change the URL here
         setGalleryData(response.data);
+       
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -89,33 +95,6 @@ const Home = () => {
    
     <div>
       <Header/>
-      {/* <header>
-        <nav className={`navbar ${isNavbarOpen ? 'active' : ''}`}>
-          <ul>
-            <li style={{ '--i': 1 }}>
-              <a href="#home">home</a>
-            </li>
-            <li style={{ '--i': 2 }}>
-              <a href="#feature">feature</a>
-            </li>
-            <li style={{ '--i': 3 }}>
-              <a href="#about">about</a>
-            </li>
-            <li style={{ '--i': 4 }}>
-              <a href="#gallery">gallery</a>
-            </li>
-            <li style={{ '--i': 5 }}>
-              <a href="#review">review</a>
-            </li>
-            <li style={{ '--i': 6 }}>
-              <a href="#contact">contact</a>
-            </li>
-          </ul>
-        </nav>
-        <div className={`menu ${isNavbarOpen ? 'active' : ''}`} onClick={toggleNavbar}>
-          <FontAwesomeIcon icon={faBars} />
-        </div>
-      </header> */}
       <section className="home" id="home">
         <div className="video-container">
           <video src={riverVideo} muted loop autoPlay></video>
@@ -140,36 +119,6 @@ const Home = () => {
         </div>
         
       </section>
-{/*       
-     <section className="feature" id="feature">
-      <h1 className="heading">Popular Places</h1>
-      <h3 className="title">See the most featured places</h3>
-
-      <div className="card-container">
-        {places.map(place => {
-          const rating = roundToHalfStar(parseFloat(place.Agency_Rating)); 
-          return (
-            <div className="card" key={place.Agency_Id}>
-              <img src={`https://localhost:7125/uploads/images/${place.tourImagePath}`} alt="" />
-              <div className="info">
-                <h3>{place.agency_Name}</h3>
-               
-                <div className="stars">
-                  {Array.from({ length: 5 }, (_, index) => (
-                    <i
-                      className={`fas fa-star${index + 1 <= rating ? '' : '-half'}`}
-                      key={index}
-                    ></i>
-                  ))}
-                </div>
-                <p>{place.tour_place}, where {place.tour_place === 'Goa' ? 'the sun, sand, and sea come together' : 'the mountains meet the skies'}, creating a scenic escape for the soul.</p>
-                <a href="#"><button className="btn">Visit now!</button></a>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </section> */}
     <section className="feature" id="feature">
         <h1 className="heading">popular places</h1>
         <h3 className="title">see the most featured places</h3>
@@ -326,10 +275,10 @@ const Home = () => {
 
       <div className="box">
         <h3>share</h3>
-        <a href="https://www.linkedin.com/in/harsh-raj-mishra-18ba1322b/">Linkedin</a>
+        <a href="https://www.linkedin.com/in/keerthana-rajendran-69a66a1b9">Linkedin</a>
         <a href="#">twitter</a>
-        <a href="#">instagram</a>
-        <a href="https://github.com/harshify">github</a>
+        <a href="https://instagram.com/keer_thanaaa?utm_source=qr&igshid=ZDc4ODBmNjlmNQ%3D%3D">instagram</a>
+        <a href="https://github.com/keerthana-kanini">github</a>
       </div>
 
       <div className="box">

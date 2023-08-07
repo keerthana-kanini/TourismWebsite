@@ -6,56 +6,60 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Link, useNavigate } from 'react-router-dom';
 
 function UserLogin() {
-    const [isSignInActive, setIsSignInActive] = useState(true);
-    const navigate = useNavigate();
-  
-    const toggleForm = () => {
-      setIsSignInActive((prevState) => !prevState);
-    };
-  
-    const handleFormSubmit = async (event) => {
-      event.preventDefault();
-      const form = event.target;
-      const formData = new FormData(form);
-  
-      const username = formData.get('username');
-      const email = formData.get('email');
-      const phone = formData.get('phone');
-      const gender = formData.get('gender');
-      const location = formData.get('location');
-      const password = formData.get('password');
-      const confirmPassword = formData.get('confirmPassword');
-  
-      if (isSignInActive) {
-        // Sign-in functionality
-        if (!username || !password) {
-          toast.error('Please fill in both username and password.');
-          return;
-        }
-   try {
-    const response = await axios.post('https://localhost:7125/api/Token/User', {
-      user_Name: username,
-      user_Password: password,
-    });
+  const [isSignInActive, setIsSignInActive] = useState(true);
+  const navigate = useNavigate();
 
-    console.log(response.data);
-  
-          if (response.status === 200) {
-            // Sign-in successful
-            console.log('Sign-in successful');
-            toast.success('Sign-in successful');
-            navigate('/');
-            // Optionally, you can redirect the user to a success page or do any other action here.
-          } else {
-            // Sign-in failed
-            console.error('Sign-in failed:', response.statusText);
-            toast.error('Sign-in failed. Please check your credentials.');
-          }
-        } catch (error) {
-          console.error('Error occurred during sign-in:', error);
-          toast.error('Error occurred during sign-in.');
+  const toggleForm = () => {
+    setIsSignInActive((prevState) => !prevState);
+  };
+
+  const handleFormSubmit = async (event) => {
+    event.preventDefault();
+    const form = event.target;
+    const formData = new FormData(form);
+
+    const username = formData.get('username');
+    const email = formData.get('email');
+    const phone = formData.get('phone');
+    const gender = formData.get('gender');
+    const location = formData.get('location');
+    const password = formData.get('password');
+    const confirmPassword = formData.get('confirmPassword');
+
+    if (isSignInActive) {
+      // Sign-in functionality
+      if (!username || !password) {
+        toast.error('Please fill in both username and password.');
+        return;
+      }
+      try {
+        const response = await axios.post('https://localhost:7125/api/Token/User', {
+          user_Name: username,
+          user_Password: password,
+        });
+
+        if (response.status === 200) {
+          // Sign-in successful
+          console.log('Sign-in successful');
+          toast.success('Sign-in successful');
+          const token = response.data;
+          localStorage.setItem('userToken', token); // Store the token in local storage
+          setTimeout(() => {
+            localStorage.removeItem('userToken');
+            console.log('Token has been automatically deleted after 5 seconds.');
+          }, 5000);
+          navigate('/');
+          // Optionally, you can redirect the user to a success page or do any other action here.
+        } else {
+          // Sign-in failed
+          console.error('Sign-in failed:', response.statusText);
+          toast.error('Sign-in failed. Please check your credentials.');
         }
-      } else {
+      } catch (error) {
+        console.error('Error occurred during sign-in:', error);
+        toast.error('Error occurred during sign-in.');
+      }
+    } else {
         // Sign-up functionality
         if (
           !username ||

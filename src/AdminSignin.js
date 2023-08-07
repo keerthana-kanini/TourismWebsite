@@ -28,10 +28,17 @@ const AdminSignin = () => {
         admin_Name: username,
         admin_Password: password,
       });
-
+  
       const token = response.data;
       console.log('Generated Token:', token);
-      // You can store the token in the local storage or a state management tool like Redux.
+      // Store the token in the local storage
+      localStorage.setItem('adminToken', token);
+  
+      // Set a timeout of 2 seconds to automatically delete the token
+      setTimeout(() => {
+        localStorage.removeItem('adminToken');
+        console.log('Token has been automatically deleted after 6 seconds.');
+      }, 5 * 60 * 1000);
 
       // Display a toast notification for successful login
       toast.success('Login Successful', {
@@ -41,7 +48,9 @@ const AdminSignin = () => {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-      });  navigate('/approve');
+      });
+
+      navigate('/approve');
 
     } catch (error) {
       console.error('Login failed:', error);

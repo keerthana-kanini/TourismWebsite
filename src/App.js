@@ -21,9 +21,14 @@ import Navbar from './Header';
 import TourPac from './TourPac';
 import AccomPost from './AccomPost';
 import GalleryPost from './GalleryPost';
+import Accomfilter from './Accomfilter';
+import AccomId from './AccomId';
+import BookingPage from './BookingPage';
+import Admincard from './Admincard';
 
 
 function App() {
+  const agencyId = [1, 2];
   return (
     <Router>
       <div>
@@ -32,7 +37,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/user-login" element={<UserLogin />} />
-          <Route path="/accom/:agencyId" element={<Accom agencyId={2}/>} />
+          <Route path="/accom/:agencyId" element={<Accom agencyId={agencyId} />} />
+          <Route path="/accomid/:agencyId" element={<AccomId/>} />
           <Route path="/adminsignin" element={<AdminSignin />} />
           <Route path="/agency-page" element={<AgencyPage />} />
           <Route path="/main" element={<Main />} />
@@ -48,6 +54,9 @@ function App() {
           <Route path="/tourpac" element={<TourPac/>} />
           <Route path="/accompost" element={<AccomPost/>} />
           <Route path="/gallerypost" element={<GalleryPost/>} />
+          <Route path="/accomfilter" element={<Accomfilter/>} />
+          <Route path="/booking" element={<BookingPage/>} />
+          <Route path="/admingall" element={<Admincard/>} />
         </Routes>
       </div>
     </Router>

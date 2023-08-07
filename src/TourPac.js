@@ -67,7 +67,8 @@ const TourPac= () => {
           </p>
           {/* Display rate_for_day with the Indian Rupee symbol */}
           {/* <p>₹{place.rate_for_day}</p> */}
-          <a href="/accom/:agencyId"><button className="btn">Visit now!</button></a>  
+<a href={`/accomid/${place.agency_Id}`}><button className="btn">Visit now!</button></a>
+ 
         </div>
         
       </div>
@@ -487,7 +488,7 @@ const TourPac= () => {
         }
         
         .feature .card-container .card .info{
-          height:100%;
+          height:111%;
           width: 100%;
           position: absolute;
           bottom:-100%; left: 0;

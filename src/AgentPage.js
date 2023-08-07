@@ -496,7 +496,7 @@ const AgentPage = () => {
         }
         
         .feature .card-container .card .info{
-          height:100%;
+          height:111%;
           width: 100%;
           position: absolute;
           bottom:-100%; left: 0;

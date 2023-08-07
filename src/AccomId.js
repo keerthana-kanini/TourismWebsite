@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { variables } from './Variable';
+
 const Card = ({ imageSrc1, imageSrc2, title, text, onClick }) => {
   return (
     <li className="cards_item" onClick={onClick}>
@@ -21,50 +23,40 @@ const Card = ({ imageSrc1, imageSrc2, title, text, onClick }) => {
   );
 };
 
-const Accom = ({ agencyId }) => {
+const AccomId = () => {
+  const { agencyId } = useParams();
   const [cardsData, setCardsData] = useState([]);
-  const [selectedAccommodation, setSelectedAccommodation] = useState(null);
+  const [selectedAccommodation, setSelectedAccommodation] = useState(null); // Add the missing useState hook
 
   useEffect(() => {
-    const agencyIds = [1, 2]; // Pass multiple agency IDs as an array
-    // Fetch data from the API using the agencyIds array
-    Promise.all(
-      agencyIds.map((id) =>
-        fetch(`${variables.API_URL}Accommodation/ByAgency/${id}`)
-          .then((response) => response.json())
-          .catch((error) => {
-            console.error('Error fetching data:', error);
-          })
-      )
-    ).then((dataArray) => {
-      // Combine data from multiple API calls and set it to the cardsData state
-      const processedData = dataArray.flatMap((data, index) =>
-        data.map((item) => ({
+    fetch(`${variables.API_URL}Accommodation/ByAgency/${agencyId}`)
+      .then((response) => response.json())
+      .then((data) => {
+        const processedData = data.map((item) => ({
           id: item.accommodationDetailId,
           imageSrc1: `https://localhost:7125/uploads/images/${item.hotelImagePath}`,
           imageSrc2: `https://localhost:7125/uploads/images/${item.placeImagePath}`,
           title: item.hotel_Name,
           text: `${item.food} - ${item.place}`,
-          agencyId: agencyIds[index], // Include the agencyId in the processed data
-        }))
-      );
-      setCardsData(processedData);
-    });
-  }, []);
+        }));
+        setCardsData(processedData);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }, [agencyId]);
 
-  // Function to fetch individual accommodation details
   const fetchAccommodationDetails = (accommodationId) => {
-    // Fetch data from the API using the accommodationId parameter
     fetch(`${variables.API_URL}Accommodation/${accommodationId}`)
       .then((response) => response.json())
       .then((data) => {
-        // Process the API response and set it to the selectedAccommodation state
-        setSelectedAccommodation(data);
+        setSelectedAccommodation(data); // Set the selected accommodation using the setSelectedAccommodation function
       })
       .catch((error) => {
         console.error('Error fetching accommodation details:', error);
       });
   };
+
   return (
     <div className="main">
       <h1>ACCOMMODATION</h1>
@@ -76,6 +68,7 @@ const Accom = ({ agencyId }) => {
             imageSrc2={card.imageSrc2}
             title={card.title}
             text={card.text}
+            onClick={() => fetchAccommodationDetails(card.id)}
           />
         ))}
       </ul>
@@ -114,7 +107,6 @@ const Accom = ({ agencyId }) => {
               font-size: 24px;
               font-weight: 400;
               text-align: center;
-              color:black;
           }
           
           img {
@@ -254,4 +246,4 @@ const Accom = ({ agencyId }) => {
   );
 };
 
-export default Accom;
+export default AccomId;

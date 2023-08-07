@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Admincard from './Admincard';
+import GalleryPost from './GalleryPost';
 
 
 export default function Approve() {
@@ -149,39 +151,12 @@ export default function Approve() {
       </div>
     </div>
     <br/>
-    {/* Create a New Admin Post card */}
-    <div className="card-container-img" style={{backgroundColor:"lightblue"}}>
-  <div className="card">
-    <h2>Gallery Post</h2>
-    <form>
-      <div className="input-field">
-        <label>Place Name</label>
-        <input
-          type="text"
-          placeholder="Enter name"
-          value={place_name}
-          onChange={handlePlaceNameChange}
-          required
-        />
+   <div>
+    <Admincard/>
+    </div>
+    <div>
+      <GalleryPost/>
       </div>
-
-      <div className="input-field">
-        <label>Choose Hotel File</label>
-        <input
-          type="file"
-          onChange={handleImgChange}
-          name="placeImagePath"
-          required
-        />
-      </div>
-
-      <button className="nextBtn" onClick={handleSubmit}>
-        <span className="btnText">Submit</span>
-        <i className="uil uil-navigator"></i>
-      </button>
-    </form>
-  </div>
-</div>
 
 
   

@@ -4,25 +4,53 @@ import { faBars } from '@fortawesome/free-solid-svg-icons';
 
 const Header = () => {
   const [navbarVisible, setNavbarVisible] = useState(false);
+  const [dropdownVisible, setDropdownVisible] = useState(false);
 
   const toggleNavbar = () => {
     setNavbarVisible((prevState) => !prevState);
   };
 
-  const hideNavbar = () => {
-    setNavbarVisible(false);
+  const showDropdown = () => {
+    setDropdownVisible(true);
   };
 
+  const hideDropdown = () => {
+    setDropdownVisible(false);
+  };
+
+
+  const handleMouseEnter = () => {
+    showDropdown();
+  };
+
+  const handleMouseLeave = () => {
+    setTimeout(() => {
+      hideDropdown();
+    }, 300000); 
+  };
   return (
     <header>
       <nav className={`navbar ${navbarVisible ? 'visible' : ''}`}>
         <ul>
-          <li style={{ '--i': 1 }}><a href="#home">home</a></li>
-          <li style={{ '--i': 2 }}><a href="#feature">feature</a></li>
-          <li style={{ '--i': 3 }}><a href="#about">about</a></li>
-          <li style={{ '--i': 4 }}><a href="#gallery">gallery</a></li>
-          <li style={{ '--i': 5 }}><a href="#review">review</a></li>
-          <li style={{ '--i': 6 }}><a href="#contact">contact</a></li>
+          <li style={{ '--i': 1 }}><a href="#home">Home</a></li>
+          <li style={{ '--i': 2 }}><a href="#feature">Feature</a></li>
+          <li style={{ '--i': 3 }}><a href="#about">About</a></li>
+          <li style={{ '--i': 4 }}><a href="#gallery">Gallery</a></li>
+          <li style={{ '--i': 5 }}><a href="#review">Review</a></li>
+          <li style={{ '--i': 6 }}><a href="#contact">Contact</a></li>
+          {/* Add login dropdown */}
+          <li
+        className="login-dropdown"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        <a href="#login">Login</a>
+        <ul className={`dropdown-content ${dropdownVisible ? 'visible' : ''}`}>
+          <li><a href="/adminsignin">Admin</a></li>
+          <li><a href="/agencyreg">Agent</a></li>
+          <li><a href="/user-login">User</a></li>
+        </ul>
+      </li>
         </ul>
       </nav>
       <div className="menu" onClick={toggleNavbar}>
@@ -857,6 +885,52 @@ const Header = () => {
             list-style: none;
             /* Add other necessary styles for the list items */
           }
+           .navbar ul {
+              display: flex;
+              align-items: center;
+            }
+            
+            .navbar li {
+              margin-right: 1rem;
+              position: relative;
+            }
+            
+            .navbar li a {
+              text-decoration: none;
+              color: #fff;
+              padding: 0.5rem 1rem;
+            }
+            
+            .navbar li a:hover {
+              color: #61DAFB;
+            }
+            
+            .login-dropdown .dropdown-content {
+              display: none;
+              position: absolute;
+              top: 100%;
+              left: 0;
+              background-color: #131418;
+              padding: 0.5rem 1rem;
+              border-radius: 0.5rem;
+            }
+            
+            .login-dropdown:hover .dropdown-content {
+              display: block;
+            }
+            
+            .login-dropdown .dropdown-content li {
+              margin: 0.5rem 0;
+            }
+            
+            .login-dropdown .dropdown-content li a {
+              color: #fff;
+              text-decoration: none;
+            }
+            
+            .login-dropdown .dropdown-content li a:hover {
+              color: #61DAFB;
+            }
           
           `}
         </style>
