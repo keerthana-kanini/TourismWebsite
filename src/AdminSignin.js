@@ -3,11 +3,13 @@ import axios from 'axios';
 import { variables } from './Variable';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
+import { Link, useNavigate } from 'react-router-dom';
 
 const AdminSignin = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
@@ -39,7 +41,8 @@ const AdminSignin = () => {
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
-      });
+      });  navigate('/approve');
+
     } catch (error) {
       console.error('Login failed:', error);
       setError('Invalid username or password');

@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { variables } from './Variable'; // Replace with the correct path to Variable.js
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'
+import 'react-toastify/dist/ReactToastify.css';
+import { Link, useNavigate } from 'react-router-dom';
 
 function UserLogin() {
     const [isSignInActive, setIsSignInActive] = useState(true);
+    const navigate = useNavigate();
   
     const toggleForm = () => {
       setIsSignInActive((prevState) => !prevState);
@@ -42,6 +44,7 @@ function UserLogin() {
             // Sign-in successful
             console.log('Sign-in successful');
             toast.success('Sign-in successful');
+            navigate('/');
             // Optionally, you can redirect the user to a success page or do any other action here.
           } else {
             // Sign-in failed

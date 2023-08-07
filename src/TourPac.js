@@ -1,375 +1,287 @@
-import React, { useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars } from '@fortawesome/free-solid-svg-icons';
-import Photo from '../src/source/photo.jpg';
-import Photo1 from '../src/source/photo2.jpg';
-import Photo3 from '../src/source/photo3.jpg';
-import riverVideo from '../src/source/river.mp4';
-import Rishikesh from '../src/source/Rishikesh.jpg';
-import User1 from '../src/source/User1.jpeg';
-import User2 from '../src/source/User2.png';
-import User3 from '../src/source/User3.jpeg';
-import about_us from '../src/source/about_us.png';
-import egypt from '../src/source/egypt.jpg';
-import kerela from '../src/source/kerela.jpg';
-import rajasthan from '../src/source/rajasthan.jpg';
-import travelling from '../src/source/travelling.png';
-import varanasi from '../src/source/varanasi.jpg';
+import React, { useState } from 'react';
+import logo from './logo1.jpg.png';
 import axios from 'axios';
-import FeedBack from './Feedback';
+import { useEffect } from 'react';
+import Navbar from './Header';
 import Header from './Navbar';
-
-const GalleryItem = ({ imageSrc, title, description }) => {
-  return (
-    <div className="box">
-      <div className="image">
-        <img src={imageSrc} alt="" />
-      </div>
-      <div className="content">
-        <h3>{title}</h3>
-        <p>{description}</p>
-        {/* <a href="#">
-          <button className="btn">explore!</button>
-        </a>  */}
-        <a href="/tourpac"><button className="btn">explore!</button></a> 
-      </div>
-    </div>
-  );
-};
+import Accom from './Accom';
 
 
-const roundToHalfStar = (rating) => {
-  return Math.round(rating * 2) / 2;
-};
-
-const Home = () => {
-  const [isNavbarOpen, setNavbarOpen] = useState(false);
-  const [galleryData, setGalleryData] = useState([]);
-  const [places, setPlaces] = useState([]);
-  const [feedbackData, setFeedbackData] = useState([]);
-
-  const toggleNavbar = () => {
-    setNavbarOpen(!isNavbarOpen);
-  };
-
-  const fetchPlaces = async () => {
-    try {
-      const response = await axios.get('https://localhost:7125/api/Agency');
-      setPlaces(response.data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
-
-  useEffect(() => {
-    // Fetch data from the API
-    const fetchData = async () => {
+const TourPac= () => {
+    const [isNavOpen, setNavOpen] = useState(false);
+    const [places, setPlaces] = useState([]);
+  
+    const toggleNav = () => {
+      setNavOpen((prevState) => !prevState);
+    };
+  
+    // Helper function to round the rating to the nearest half-star
+    const roundToHalfStar = (rating) => {
+      return Math.round(rating * 2) / 2;
+    };
+  
+    // Fetch places from the API and populate the places state
+    const fetchPlaces = async () => {
       try {
-        const response = await axios.get('https://localhost:7125/api/AdminPosts'); // Change the URL here
-        setGalleryData(response.data);
+        const response = await axios.get('https://localhost:7125/api/Agency');
+        setPlaces(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
+  
+    useEffect(() => {
+      fetchPlaces(); // Call fetchPlaces to populate places state
+    }, []);
 
-    fetchData();
-    fetchPlaces(); // Call fetchPlaces to populate places state
-
-    // Fetch the feedback data from the API
-    fetch('https://localhost:7125/api/FeedBacks')
-      .then((response) => response.json())
-      .then((data) => setFeedbackData(data))
-      .catch((error) => console.error('Error fetching feedback data:', error));
-  }, []);
-
-    
+  
 
   return (
-    
-   
     <div>
-      <Header/>
-      {/* <header>
-        <nav className={`navbar ${isNavbarOpen ? 'active' : ''}`}>
-          <ul>
-            <li style={{ '--i': 1 }}>
-              <a href="#home">home</a>
-            </li>
-            <li style={{ '--i': 2 }}>
-              <a href="#feature">feature</a>
-            </li>
-            <li style={{ '--i': 3 }}>
-              <a href="#about">about</a>
-            </li>
-            <li style={{ '--i': 4 }}>
-              <a href="#gallery">gallery</a>
-            </li>
-            <li style={{ '--i': 5 }}>
-              <a href="#review">review</a>
-            </li>
-            <li style={{ '--i': 6 }}>
-              <a href="#contact">contact</a>
-            </li>
-          </ul>
-        </nav>
-        <div className={`menu ${isNavbarOpen ? 'active' : ''}`} onClick={toggleNavbar}>
-          <FontAwesomeIcon icon={faBars} />
-        </div>
-      </header> */}
-      <section className="home" id="home">
-        <div className="video-container">
-          <video src={riverVideo} muted loop autoPlay></video>
-        </div>
-        <div className="content">
-          <h1>explore.</h1>
-          <h3>its time to travel</h3>
-          <div className="form-container">
-            <form action="">
-              <h3>search your destination</h3>
-              <span>location</span>
-              <input type="text" placeholder="place you want to visit" />
-              <span>guest members</span>
-              <input type="number" placeholder="how many people" />
-              <span>arrivals</span>
-              <input type="date" />
-              <span>leaving</span>
-              <input type="date" />
-              <input className="btn" type="submit" value="search" />
-            </form>
-          </div>
-        </div>
-        
+      <section>
+        <Header/>
       </section>
-{/*       
-     <section className="feature" id="feature">
-      <h1 className="heading">Popular Places</h1>
+    <section className="feature" id="feature">
+    <h1 className="heading">Popular Places</h1>
       <h3 className="title">See the most featured places</h3>
 
       <div className="card-container">
-        {places.map(place => {
-          const rating = roundToHalfStar(parseFloat(place.Agency_Rating)); 
-          return (
-            <div className="card" key={place.Agency_Id}>
-              <img src={`https://localhost:7125/uploads/images/${place.tourImagePath}`} alt="" />
-              <div className="info">
-                <h3>{place.agency_Name}</h3>
-               
-                <div className="stars">
-                  {Array.from({ length: 5 }, (_, index) => (
-                    <i
-                      className={`fas fa-star${index + 1 <= rating ? '' : '-half'}`}
-                      key={index}
-                    ></i>
-                  ))}
-                </div>
-                <p>{place.tour_place}, where {place.tour_place === 'Goa' ? 'the sun, sand, and sea come together' : 'the mountains meet the skies'}, creating a scenic escape for the soul.</p>
-                <a href="#"><button className="btn">Visit now!</button></a>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </section> */}
-    <section className="feature" id="feature">
-        <h1 className="heading">popular places</h1>
-        <h3 className="title">see the most featured places</h3>
-
-        <div className="card-container">
-
-          <div className="card">
-            <img src={Photo} alt="" />
-            <div className="info">
-              <h3>tour 1-Manali</h3>
-              <div className="stars">
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-              </div>
-              <p>Manali, where the mountains meet the skies, creating a scenic escape for the soul.</p>
-              <a href="#"><button className="btn">visit now!</button></a>
-            </div>
+  {places.map((place) => {
+    const rating = roundToHalfStar(parseFloat(place.Agency_Rating)); // Parse the rating and round it to the nearest half-star
+    return (
+      <div className="card" key={place.Agency_Id}>
+        <img src={`https://localhost:7125/uploads/images/${place.tourImagePath}`} alt="" />
+        <div className="info">
+          <h3>{place.agency_Name}</h3>
+          {/* Assuming Agency_Rating is a number, we can display stars based on that */}
+          <div className="stars">
+            {Array.from({ length: 5 }, (_, index) => (
+              <i
+                className={`fas fa-star${index + 1 <= rating ? '' : '-half'}`}
+                key={index}
+              ></i>
+            ))}
           </div>
-
-          <div className="card">
-            <img src={Photo1} alt="" />
-            <div className="info">
-              <h3>tour 2- Goa</h3>
-              <div className="stars">
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-              </div>
-              <p>Goa, where the sun, sand, and sea come together to create a paradise on earth.</p>
-              <a href="#"><button className="btn">visit now!</button></a>
-            </div>
-          </div>
-          <div className="card">
-            <img src={Photo3} alt="" />
-            <div className="info">
-              <h3>tour 3-Bali</h3>
-              <div className="stars">
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star-half"></i>
-              </div>
-              <p>Bali, where the beauty of nature and rich cultural heritage come together in perfect harmony.</p>
-              <a href="#"><button className="btn">visit now!</button></a>
-            </div>
-          </div>
+          <p>
+            {place.tour_place}, where {place.tour_place === 'Goa' ? 'the sun, sand, and sea come together' : 'the mountains meet the skies'}, creating a scenic escape for the soul.
+          </p>
+          {/* Display rate_for_day with the Indian Rupee symbol */}
+          {/* <p>₹{place.rate_for_day}</p> */}
+          <a href="/accom/:agencyId"><button className="btn">Visit now!</button></a>  
         </div>
-      </section>
-      
-    <section className="gallery" id="gallery">
-      <h1 className="heading">our gallery</h1>
-      <h3 className="title">explore the most visited places</h3>
-
-      <div className="box-container">
-        {galleryData.map((item) => (
-          <GalleryItem
-            key={item.place_Id} // Assuming that "place_Id" is the unique identifier for each place
-            imageSrc={`https://localhost:7125/uploads/images/${item.placeImagePath}`} // Change the imageSrc prop
-            title={item.place_name} // Change the title prop
-            description={`${item.place_name} -  The perfect getaway for nature enthusiasts. Surround yourself with lush greenery and enjoy outdoor activities all year round in ${item.place_name}.`} // Concatenating the place_name with additional content
-          />
-        ))}
+        
       </div>
+        
+    );
+  })}
+</div>
     </section>
-    <section className="review" id="review">
-      <h1 className="heading">customers review</h1>
-      <h3 className="title">what people say about us</h3>
-      <div className="box-container">
-        {feedbackData &&
-          feedbackData.map((feedback) => (
-            <div className="box" key={feedback.feedBack_id}>
-              <i className="fas fa-quote-left"></i>
-              <p>{feedback.feedBack_area}</p>
-              <div className="user">
-                <div className="info">
-                  <div className="stars">
-                    {/* Display star rating based on feedbackRating */}
-                    {Array.from({ length: 5 }, (_, index) => (
-                      <i
-                        className={`fas fa-star${
-                          index + 1 <= roundToHalfStar(feedback.feedBack_rating) ? '' : '-half'
-                        }`}
-                        key={index}
-                      ></i>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-      </div>
-      <div>
-        <FeedBack/>
-      </div>
-    </section>
-      <section className="about" id="about">
-        <h1 className="heading">about us</h1>
-        <h3 className="title">explore the world with us</h3>
-        <div className="row">
-          <div className="image">
-            <img src={travelling} alt="" />
-          </div>
-          <div className="content">
-            <h3>why choose us?</h3>
-            <p>Choose TravelAir for personalized travel experiences, innovative solutions, flexibility, cost-effectiveness, and a passionate team. Experience memorable and enjoyable trips with TravelAir.</p>
-            <a href="#"><button className="btn">Read more</button></a>
-          </div>
-        </div>
-        <div className="box-container">
-          <div className="box">
-            <i className="fas fa-map"></i>
-            <h3>travel guide</h3>
-          </div>
-          <div className="box">
-            <i className="fas fa-users"></i>
-            <h3>24 x 7 service</h3>
-          </div>
-          <div className="box">
-            <i className="fas fa-hotel"></i>
-            <h3>hotel booking</h3>
-          </div>
-        </div>
-      </section>
-      <section className="contact" id="contact">
-      <h1 className="heading">contact us</h1>
-      <h3 className="title">book your tickets now</h3>
-
-      <form action="">
-        <div className="inputBox">
-          <input type="text" placeholder="first name" />
-          <input type="text" placeholder="last name" />
-        </div>
-
-        <div className="inputBox">
-          <input type="email" placeholder="email" />
-          <input type="number" placeholder="phone" />
-        </div>
-
-        <textarea name="" id="" cols="30" rows="10" placeholder="message"></textarea>
-
-        <input type="submit" value="message" className="btn" />
-      </form>
-    </section>
-     <section className="footer">
-      <div className="box">
-        <h3>explore.</h3>
-        <p>TravelAir: Where Adventure Awaits And Memories Are Made.</p>
-      </div>
-
-      <div className="box">
-        <h3>share</h3>
-        <a href="https://www.linkedin.com/in/harsh-raj-mishra-18ba1322b/">Linkedin</a>
-        <a href="#">twitter</a>
-        <a href="#">instagram</a>
-        <a href="https://github.com/harshify">github</a>
-      </div>
-
-      <div className="box">
-        <h3>links</h3>
-        <a href="#">home</a>
-        <a href="#">feature</a>
-        <a href="#">about</a>
-        <a href="#">gallery</a>
-        <a href="#">review</a>
-        <a href="#">contact</a>
-      </div>
-
-    </section>
+   
+     
+   
     <div>
-    <style>
-        {`
-        @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;1,100;1,300;1,400&display=swap');
-        @import '~@fortawesome/fontawesome-free/css/all.min.css';
-        
-        :root{
-          --red:#9900ff;
-        }
-        
-        *{
-          font-family: 'Roboto', sans-serif;
-          margin:0; padding: 0;
-          box-sizing: border-box;
-          border:none; outline: none;
-          text-decoration: none;
-          text-transform: capitalize;
-          font-weight: 400;
-          transition:.2s linear;
-        }
-        
-        *::selection{
-          background:var(--red);
-          color:#fff;
-        }
-        
-        html{
+      
+    
+        <style>
+            {`
+             @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;1,100;1,300;1,400&display=swap');
+             @import '~@fortawesome/fontawesome-free/css/all.min.css';
+             
+             :root{
+               --red:#9900ff;
+             }
+             
+            
+             
+             *::selection{
+               background:var(--red);
+               color:#fff;
+             }
+            *{
+                margin: 0;
+                padding: 0;
+                color: #f2f5f7;
+                font-family: sans-serif;
+                letter-spacing: 1px;
+                font-weight: 300;
+            }
+            body{
+                overflow-x: hidden;
+            }
+            nav{
+                height: 6rem;
+                width: 100vw;
+                background-color: #131418;
+                box-shadow: 0 3px 20px rgba(0, 0, 0, 0.2);
+                display: flex;
+                position: fixed;
+                z-index: 10;
+            }
+            
+            /*Styling logo*/
+            .logo{
+                padding:1vh 1vw;
+                text-align: center;
+            }
+            .logo img {
+                height: 5rem;
+                width: 8rem;
+            }
+            
+            /*Styling Links*/
+            .nav-links{
+                display: flex;
+                list-style: none; 
+                width: 88vw;
+                padding: 0 0.7vw;
+                justify-content: space-evenly;
+                align-items: center;
+                text-transform: uppercase;
+            }
+            .nav-links li a{
+                text-decoration: none;
+                margin: 0 0.7vw;
+            }
+            .nav-links li a:hover {
+                color: #61DAFB;
+            }
+            .nav-links li {
+                position: relative;
+            }
+            .nav-links li a::before {
+                content: "";
+                display: block;
+                height: 3px;
+                width: 0%;
+                background-color: #61DAFB;
+                position: absolute;
+                transition: all ease-in-out 250ms;
+                margin: 0 0 0 10%;
+            }
+            .nav-links li a:hover::before{
+                width: 80%;
+            }
+            
+            /*Styling Buttons*/
+            .login-button{
+                background-color: transparent;
+                border: 1.5px solid #f2f5f7;
+                border-radius: 2em;
+                padding: 0.6rem 0.8rem;
+                margin-left: 2vw;
+                font-size: 1rem;
+                cursor: pointer;
+            
+            }
+            .login-button:hover {
+                color: #131418;
+                background-color: #f2f5f7;
+                border:1.5px solid #f2f5f7;
+                transition: all ease-in-out 350ms;
+            }
+            .join-button{
+                color: #131418;
+                background-color: #61DAFB;
+                border: 1.5px solid #61DAFB;
+                border-radius: 2em;
+                padding: 0.6rem 0.8rem;
+                font-size: 1rem;
+                cursor: pointer;
+            }
+            .join-button:hover {
+                color: #f2f5f7;
+                background-color: transparent;
+                border:1.5px solid #f2f5f7;
+                transition: all ease-in-out 350ms;
+            }
+            
+            /*Styling Hamburger Icon*/
+            .hamburger div{
+                width: 30px;
+                height:3px;
+                background: #f2f5f7;
+                margin: 5px;
+                transition: all 0.3s ease;
+            }
+            .hamburger{
+                display: none;
+            }
+            
+            /*Stying for small screens*/
+            @media screen and (max-width: 800px){
+                nav{
+                    position: fixed;
+                    z-index: 3;
+                }
+                .hamburger{
+                    display:block;
+                    position: absolute;
+                    cursor: pointer;
+                    right: 5%;
+                    top: 50%;
+                    transform: translate(-5%, -50%);
+                    z-index: 2;
+                    transition: all 0.7s ease;
+                }
+                .nav-links{
+                    position: fixed;
+                    background: #131418;
+                    height: 100vh;
+                    width: 100%;
+                    flex-direction: column;
+                    clip-path: circle(50px at 90% -20%);
+                    -webkit-clip-path: circle(50px at 90% -10%);
+                    transition: all 1s ease-out;
+                    pointer-events: none;
+                }
+                .nav-links.open{
+                    clip-path: circle(1000px at 90% -10%);
+                    -webkit-clip-path: circle(1000px at 90% -10%);
+                    pointer-events: all;
+                }
+                .nav-links li{
+                    opacity: 0;
+                }
+                .nav-links li:nth-child(1){
+                    transition: all 0.5s ease 0.2s;
+                }
+                .nav-links li:nth-child(2){
+                    transition: all 0.5s ease 0.4s;
+                }
+                .nav-links li:nth-child(3){
+                    transition: all 0.5s ease 0.6s;
+                }
+                .nav-links li:nth-child(4){
+                    transition: all 0.5s ease 0.7s;
+                }
+                .nav-links li:nth-child(5){
+                    transition: all 0.5s ease 0.8s;
+                }
+                .nav-links li:nth-child(6){
+                    transition: all 0.5s ease 0.9s;
+                    margin: 0;
+                }
+                .nav-links li:nth-child(7){
+                    transition: all 0.5s ease 1s;
+                    margin: 0;
+                }
+                li.fade{
+                    opacity: 1;
+                }
+            }
+            /*Animating Hamburger Icon on Click*/
+            .toggle .line1{
+                transform: rotate(-45deg) translate(-5px,6px);
+            }
+            .toggle .line2{
+                transition: all 0.7s ease;
+                width:0;
+            }
+            .toggle .line3{
+                transform: rotate(45deg) translate(-5px,-6px);
+            }
+         
+                html{
           font-size: 62.5%;
           overflow-x: hidden;
         }
@@ -417,7 +329,7 @@ const Home = () => {
           top:1.5rem; right:2rem;
           font-size: 3.5rem;
           color:var(--red);
-          background:#ffff;
+          background:var(--red);
           box-shadow: 0 .1rem .3rem rgba(0,0,0,.3);
           padding:.3rem 1.4rem;
           cursor: pointer;
@@ -977,13 +889,11 @@ const Home = () => {
           }
         
         } 
-          
-        `}
-      </style>
+            `}
+        </style>
+        </div>
     </div>
-    </div>
-    
   );
-}
+};
 
-export default Home;
+export default TourPac;

@@ -15,6 +15,13 @@ import AgencyReg from './AgencyReg';
 import Approve from './Approve';
 import FeedBack from './Feedback';
 import Header from './Navbar';
+import AgentPage from './AgentPage';
+import AgentPost from './AgentPost';
+import Navbar from './Header';
+import TourPac from './TourPac';
+import AccomPost from './AccomPost';
+import GalleryPost from './GalleryPost';
+
 
 function App() {
   return (
@@ -25,7 +32,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/user-login" element={<UserLogin />} />
-          <Route path="/accom/:agencyId" element={<Accom agencyId={1}/>} />
+          <Route path="/accom/:agencyId" element={<Accom agencyId={2}/>} />
           <Route path="/adminsignin" element={<AdminSignin />} />
           <Route path="/agency-page" element={<AgencyPage />} />
           <Route path="/main" element={<Main />} />
@@ -35,6 +42,12 @@ function App() {
           <Route path="/approve" element={<Approve/>} />
           <Route path="/feedback" element={<FeedBack/>} />
           <Route path="/navbar" element={<Header/>} />
+          <Route path="/agentpage" element={<AgentPage/>} />
+          <Route path="/agentpost" element={<AgentPost/>} />
+          <Route path="/nav" element={<Navbar/>} />
+          <Route path="/tourpac" element={<TourPac/>} />
+          <Route path="/accompost" element={<AccomPost/>} />
+          <Route path="/gallerypost" element={<GalleryPost/>} />
         </Routes>
       </div>
     </Router>

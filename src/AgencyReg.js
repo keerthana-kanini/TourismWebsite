@@ -3,7 +3,7 @@ import axios from 'axios';
 import { variables } from './Variable';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
-
+import { Link, useNavigate } from 'react-router-dom';
 
 const AgencyReg = () => {
   const [isSignUpMode, setSignUpMode] = useState(false);
@@ -12,6 +12,7 @@ const AgencyReg = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
+  const navigate = useNavigate();
 
   const handleSignInSubmit = async (event) => {
     event.preventDefault();
@@ -29,6 +30,7 @@ const AgencyReg = () => {
             const token = response.data; // Assuming the token is returned in the response
             console.log('Token:', token);
             toast.success('Sign In Successful!');
+            navigate('/AgentPage');
           } else {
             // Handle other possible responses or error messages
             toast.error('Sign In Failed! Please try again.');

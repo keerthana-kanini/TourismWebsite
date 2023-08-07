@@ -48,7 +48,7 @@ const Accom = ({ agencyId }) => {
 
   return (
     <div className="main">
-      <h1>Responsive Card Grid Layout</h1>
+      <h1>ACCOMMODATION</h1>
       <ul className="cards">
         {cardsData.map((card) => (
           <Card
@@ -60,7 +60,7 @@ const Accom = ({ agencyId }) => {
           />
         ))}
       </ul>
-      <h3 className="made_by">Made with ♡</h3>
+      {/* <h3 className="made_by">Made with ♡</h3> */}
       <style>
         {`
           /* Font */
