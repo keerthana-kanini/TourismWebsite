@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 const Admincard = () => {
     const [adminPosts, setAdminPosts] = useState([]);
-    const token =localStorage.getItem('adminToken');
+    const token =localStorage.getItem('userToken');
   
     useEffect(() => {
       fetchAdminPosts();
@@ -28,7 +28,7 @@ const Admincard = () => {
   
     return (
       <div className="container">
-        {/* Card deck */}
+       <h1>GALLERY IMAGES</h1>
         <div className="card-deck row">
           {adminPosts.map((post) => (
             <div key={post.id} className="col-xs-12 col-sm-6 col-md-4">
@@ -42,9 +42,9 @@ const Admincard = () => {
                 <div className="card-body">
                   <h4 className="card-title">{post.place_name}</h4>
                   <p className="card-text">{/* Add content here */}</p>
-                  <button type="button" className="btn btn-light-blue btn-md">
+                  {/* <button type="button" className="btn btn-light-blue btn-md">
                     Read more
-                  </button>
+                  </button> */}
                 </div>
               </div>
             </div>

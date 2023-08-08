@@ -42,7 +42,7 @@ const TourPac= () => {
         <Header/>
       </section>
     <section className="feature" id="feature">
-    <h1 className="heading">Popular Places</h1>
+    <h1 className="heading">Tour Packages</h1>
       <h3 className="title">See the most featured places</h3>
 
       <div className="card-container">
@@ -66,7 +66,7 @@ const TourPac= () => {
             {place.tour_place}, where {place.tour_place === 'Goa' ? 'the sun, sand, and sea come together' : 'the mountains meet the skies'}, creating a scenic escape for the soul.
           </p>
           {/* Display rate_for_day with the Indian Rupee symbol */}
-          {/* <p>₹{place.rate_for_day}</p> */}
+          <p>₹{place.rate_for_day}</p>
 <a href={`/accomid/${place.agency_Id}`}><button className="btn">Visit now!</button></a>
  
         </div>
@@ -488,7 +488,7 @@ const TourPac= () => {
         }
         
         .feature .card-container .card .info{
-          height:111%;
+          height:124%;
           width: 100%;
           position: absolute;
           bottom:-100%; left: 0;

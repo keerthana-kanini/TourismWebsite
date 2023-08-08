@@ -109,7 +109,7 @@ const AgentPage = () => {
             *{
                 margin: 0;
                 padding: 0;
-                color: #f2f5f7;
+                color: #131418;
                 font-family: sans-serif;
                 letter-spacing: 1px;
                 font-weight: 300;

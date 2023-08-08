@@ -48,7 +48,7 @@ function UserLogin() {
             localStorage.removeItem('userToken');
             console.log('Token has been automatically deleted after 5 seconds.');
           }, 5000);
-          navigate('/');
+          navigate('/home');
           // Optionally, you can redirect the user to a success page or do any other action here.
         } else {
           // Sign-in failed

@@ -36,7 +36,7 @@ const AccomPost = () => {
       postData.append('place', place);
       postData.append('placeImageFile', placeImagePath);
       postData.append('hotelImageFile', HotelImagePath);
-      postData.append('agency.Agency_Id', '2');
+      postData.append('agency.Agency_Id', '4');
   
       // Send the POST request using Axios
       axios

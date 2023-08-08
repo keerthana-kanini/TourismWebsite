@@ -26,7 +26,7 @@ const Accom = ({ agencyId }) => {
   const [selectedAccommodation, setSelectedAccommodation] = useState(null);
 
   useEffect(() => {
-    const agencyIds = [1, 2]; // Pass multiple agency IDs as an array
+    const agencyIds = [1, 2,4]; // Pass multiple agency IDs as an array
     // Fetch data from the API using the agencyIds array
     Promise.all(
       agencyIds.map((id) =>
@@ -187,7 +187,7 @@ const Accom = ({ agencyId }) => {
           
           .card_title {
             color: #ffffff;
-            font-size: 1.1rem;
+            font-size: 1.5rem;
             font-weight: 700;
             letter-spacing: 1px;
             text-transform: capitalize;
@@ -196,7 +196,7 @@ const Accom = ({ agencyId }) => {
           
           .card_text {
             color: #ffffff;
-            font-size: 0.875rem;
+            font-size: 1.4rem;
             line-height: 1.5;
             margin-bottom: 1.25rem;
             font-weight: 400;

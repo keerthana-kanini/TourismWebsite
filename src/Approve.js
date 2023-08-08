@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Admincard from './Admincard';
 import GalleryPost from './GalleryPost';
+import Navbar from './Header';
 
 
 export default function Approve() {
@@ -104,6 +105,7 @@ export default function Approve() {
     }
 
     return travelAgents.map(agent => (
+      <div>
       <div className="agent-card" key={agent.agent_Id}>
         <div className="agent-card__content">
           <h2>{agent.agent_Name}</h2>
@@ -118,6 +120,7 @@ export default function Approve() {
           </button>
         </div>
       </div>
+      </div>
     ));
   };
 
@@ -125,6 +128,10 @@ export default function Approve() {
  
   return (
     <div>
+      <section>
+        <Navbar/>
+        </section>
+        <div>
        
       <center><h1>Travel Agents Request</h1></center><br></br>
       <div id="travelAgentsContainer">{renderTravelAgents()}</div>
@@ -158,7 +165,7 @@ export default function Approve() {
       <GalleryPost/>
       </div>
 
-
+      </div>
   
       <style>
         {`
@@ -212,6 +219,7 @@ export default function Approve() {
   justify-content: center;
   align-items: center;
   gap: 20px;
+  margin-top: 30px;
 }
 
 .agent-card {

@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import logo from './logo1.jpg.png';
 
-
 const Navbar = () => {
-  const [isNavOpen, setNavOpen] = useState(false);
-
-  const toggleNav = () => {
-    setNavOpen((prevState) => !prevState);
-  };
-
+    const [isNavOpen, setNavOpen] = useState(false);
+    const [isLoginOpen, setLoginOpen] = useState(false);
+  
+    const toggleNav = () => {
+      setNavOpen((prevState) => !prevState);
+    };
+  
+    const toggleLoginDropdown = () => {
+      setLoginOpen((prevState) => !prevState);
+    };
+  
   return (
     <div>
     <nav>
@@ -22,38 +26,49 @@ const Navbar = () => {
       </div>
       <ul className={`nav-links ${isNavOpen ? 'open' : ''}`}>
         <li>
-          <a href="#">Home</a>
+          <a href="/">Home</a>
         </li>
         <li>
-          <a href="#">Solutions</a>
+          <a href="/approve">Request Approved</a>
         </li>
         <li>
-          <a href="#">Products</a>
+          <a href="#">Gallery</a>
         </li>
         <li>
-          <a href="#">Services</a>
+          <a href="#">About Us</a>
         </li>
-        <li>
-          <a href="#">Contact Us</a>
-        </li>
-        <li>
-          <button className="login-button">Login</button>
-        </li>
-        <li>
-          <button className="join-button">Join</button>
+        <li className="login-dropdown">
+          <button className="login-button" onClick={toggleLoginDropdown}>Login</button>
+          {isLoginOpen && (
+            <ul className="login-options">
+              <li>
+                <a href="/adminsignin">Admin</a>
+              </li>
+              <li>
+                <a href="/user-login">User</a>
+              </li>
+              <li>
+                <a href="/agencyreg">Agent</a>
+              </li>
+            </ul>
+          )}
         </li>
       </ul>
     </nav>
     <div>
         <style>
             {`
+            ol ol, ol ul, ul ol, ul ul {
+                margin-bottom: -96px;
+            }
            *{
             margin: 0;
             padding: 0;
-            color: #f2f5f7;
+            color: black;
             font-family: sans-serif;
             letter-spacing: 1px;
             font-weight: 300;
+            height: -28px;
         }
         body{
             overflow-x: hidden;
@@ -119,7 +134,7 @@ const Navbar = () => {
             border-radius: 2em;
             padding: 0.6rem 0.8rem;
             margin-left: 2vw;
-            font-size: 1rem;
+            font-size: 1.5rem;
             cursor: pointer;
         
         }

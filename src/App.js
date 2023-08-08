@@ -28,15 +28,15 @@ import Admincard from './Admincard';
 
 
 function App() {
-  const agencyId = [1, 2];
+  const agencyId = [1, 2,4];
   return (
     <Router>
       <div>
         <ToastContainer />
 
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/user-login" element={<UserLogin />} />
+          <Route path="/home" element={<Home />} />
+          <Route path="/" element={<UserLogin />} />
           <Route path="/accom/:agencyId" element={<Accom agencyId={agencyId} />} />
           <Route path="/accomid/:agencyId" element={<AccomId/>} />
           <Route path="/adminsignin" element={<AdminSignin />} />

@@ -17,11 +17,13 @@ const Card = ({ imageSrc1, imageSrc2, title, text, onClick }) => {
         <div className="card_content">
           <h2 className="card_title">{title}</h2>
           <p className="card_text">{text}</p>
+          <a href="/booking"><button className="btn">BOOK</button></a> 
         </div>
       </div>
     </li>
   );
 };
+
 
 const AccomId = () => {
   const { agencyId } = useParams();
@@ -116,17 +118,17 @@ const AccomId = () => {
           }
           
           .btn {
-            color: #ffffff;
+            color: #212529;
             padding: 0.8rem;
             font-size: 14px;
             text-transform: uppercase;
-            border-radius: 4px;
+            border-radius: 50px;
             font-weight: 400;
             display: block;
             width: 100%;
             cursor: pointer;
             border: 1px solid rgba(255, 255, 255, 0.2);
-            background: transparent;
+            background: #fdeaec;
           }
           
           .btn:hover {
@@ -235,7 +237,7 @@ const AccomId = () => {
             object-fit: cover; /* Make the images fill the container without stretching */
           }
           .card {
-            height: 300px; /* Set the desired fixed height for the cards */
+            height: 400px; /* Set the desired fixed height for the cards */
           }
           
           
