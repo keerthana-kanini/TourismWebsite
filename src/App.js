@@ -25,10 +25,13 @@ import Accomfilter from './Accomfilter';
 import AccomId from './AccomId';
 import BookingPage from './BookingPage';
 import Admincard from './Admincard';
+import Download from './Download';
+import ModalContainer from './ModalContainer';
+import Success from './sample/Success';
 
 
 function App() {
-  const agencyId = [1, 2,4];
+  const agencyId = [1, 2,4,6];
   return (
     <Router>
       <div>
@@ -57,6 +60,9 @@ function App() {
           <Route path="/accomfilter" element={<Accomfilter/>} />
           <Route path="/booking" element={<BookingPage/>} />
           <Route path="/admingall" element={<Admincard/>} />
+          <Route path="/down" element={<Download/>} />
+          <Route path="/model" element={<ModalContainer/>} />
+          <Route path="/success" element={<Success/>} />
         </Routes>
       </div>
     </Router>

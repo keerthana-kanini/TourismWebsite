@@ -83,7 +83,7 @@ export default function AgentPost() {
 
   return (
     <div>
-      <section className="h-100 h-custom" style={{ backgroundColor: '#8fc4b7' }}>
+      <section className="h-100 h-custom" style={{ backgroundColor: '#c98d93' }}>
         <div className="container py-5 h-100">
           <div className="row d-flex justify-content-center align-items-center h-100">
             <div className="col-lg-8 col-xl-6">
@@ -99,7 +99,7 @@ export default function AgentPost() {
                 />
                 <div className="card-body p-4 p-md-5">
                   <h3 className="mb-4 pb-2 pb-md-0 mb-md-5 px-md-2">
-                    Registration Info
+                   Agency Registration 
                   </h3>
 
                   <form className="px-md-2" onSubmit={handleSubmit}>
@@ -214,7 +214,7 @@ export default function AgentPost() {
 
                     <button
                       type="submit"
-                      className="btn btn-success btn-lg mb-1"
+                      className="btn btn-info btn-lg mb-1"
                     >
                       Submit
                     </button>

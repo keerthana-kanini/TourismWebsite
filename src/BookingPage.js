@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { jsPDF } from 'jspdf';
+import 'jspdf-autotable';
 
 
 
@@ -11,8 +13,37 @@ export default function BookingPage() {
   const [paymentDetails, setPaymentDetails] = useState(null);
   const [offerForDay, setOfferForDay] = useState('$0.0');
   const [rateForDay, setRateForDay] = useState('$186.86');
-  const agencystoredId = localStorage.getItem('selectedAgencyId');
+  const agencystoredId = localStorage.getItem('selectedAgentId');
   const userstoredId = localStorage.getItem('userId');
+  const generatePaymentPDF = () => {
+    const doc = new jsPDF();
+    doc.text('Payment Receipt', 15, 15);
+
+    const tableData = [
+        ['Description', 'Amount'],
+        ['User Name', 'Karan'],
+        ['Tour Package', 'Summer Getaway'],
+        ['Rate For Day', rateForDay],
+        ['Offer For Day', `${offerForDay}%`],
+        ['No of Person', paymentDetails?.no_of_perons || '$0.0'],
+        ['No of Children', paymentDetails?.no_of_childer || '$00.00'],
+        ['Amount For Person', paymentDetails?.amount_for_person || '$00.00'],
+        ['Amount For Children', paymentDetails?.amount_for_childer || '$00.00'],
+        ['Date of Booking', paymentDetails?.customer_Date_Of_Booking || 'N/A'],
+        ['User Balance', '$6000'],
+        ['Total', paymentDetails?.booking_amount || '$00.00'],
+    ];
+
+    doc.autoTable({
+        head: [['Description', 'Amount']],
+        body: tableData.slice(1), 
+        startY: 30, 
+    });
+
+    doc.save('payment_receipt.pdf');
+};
+
+
 
   useEffect(() => {
     // Fetch offer_For_Day and rate_for_day from the API
@@ -68,20 +99,17 @@ export default function BookingPage() {
   };
 
   return (
-    <div>
-      <section>
+    <div className="booking-page-container">
+    <section className="booking-section">
         <div className="d-flex justify-content-between align-items-center mb-5">
           <div className="d-flex flex-row align-items-center">
-            <h4 className="text-uppercase mt-1">Eligible</h4>
-            <span className="ms-2 me-3">Pay</span>
+            <h4 className="text-uppercase mt-1">TOUR PACKAGE BOOKING</h4>
           </div>
-          <a href="#!">Cancel and return to the website</a>
+          <a href="/home">Cancel and return to the website</a>
         </div>
 
         <div className="row">
           <div className="col-md-7 col-lg-7 col-xl-6 mb-4 mb-md-0">
-            <h5 className="mb-0 text-success">{rateForDay}</h5>
-            <h5 className="mb-3">Diabetes Pump & Supplies</h5>
             <div className="d-flex justify-content-between">
               <div className="flex-fill me-2">
                 <label htmlFor="numberOfPersons" className="form-label">Number of Persons (Max 4):</label>
@@ -109,7 +137,7 @@ export default function BookingPage() {
               </div>
             </div>
             <div className="p-2 d-flex justify-content-between align-items-center" style={{ backgroundColor: '#eee' }}>
-              <span>Aetna - Open Access</span>
+              <span>Booking Date</span>
               <DatePicker
                 selected={bookingDate}
                 onChange={handleBookingDateChange}
@@ -120,16 +148,15 @@ export default function BookingPage() {
             <hr />
             <div className="d-flex justify-content-between align-items-center">
               <div className="d-flex flex-row mt-1">
-                <h6>Patient Balance</h6>
-                <h6 className="fw-bold text-success ms-1">$13.24</h6>
+                <h6>USER BALANCE</h6>
+                <h6 className="fw-bold text-success ms-1">$6000</h6>
               </div>
               <div className="d-flex flex-row align-items-center text-primary">
                 <span className="ms-1">Add Payment card</span>
               </div>
             </div>
             <p>
-              Insurance claim and all necessary dependencies will be submitted to your
-              insurer for the covered portion of this order.
+             SELECT PAYMENT METHOD
             </p>
             <div className="d-flex flex-column mb-3">
               <div className="btn-group-vertical" role="group" aria-label="Vertical button group">
@@ -156,46 +183,109 @@ export default function BookingPage() {
           </div>
           <div className="col-md-5 col-lg-4 col-xl-4 offset-lg-1 offset-xl-2">
             <div className="p-3" style={{ backgroundColor: '#eee' }}>
-              <span className="fw-bold">Order Recap</span>
+              <span className="fw-bold">Booking Details</span>
               <div className="d-flex justify-content-between mt-2">
-                <span>Contracted Price</span> <span>{rateForDay}</span>
+                <span>Tour Packages Price</span> <span>{rateForDay}</span>
               </div>
               <div className="d-flex justify-content-between mt-2">
-                <span>Amount Deductible</span> <span>{offerForDay}</span>
+                <span>Offer</span> <span>{offerForDay}%</span>
               </div>
               <div className="d-flex justify-content-between mt-2">
-                <span>Coinsurance(0%)</span> <span>{paymentDetails?.no_of_perons || '$0.0'}</span>
+                <span>No of Person</span> <span>{paymentDetails?.no_of_perons || '$0.0'}</span>
               </div>
               <div className="d-flex justify-content-between mt-2">
-                <span>Copayment</span> <span>{paymentDetails?.no_of_childer || '$40.00'}</span>
-              </div>
-              <hr />
-              <div className="d-flex justify-content-between mt-2">
-                <span className="lh-sm">Total Deductible,<br />Coinsurance and copay</span>
-                <span>{paymentDetails?.amount_for_person || '$40.00'}</span>
-              </div>
-              <div className="d-flex justify-content-between mt-2">
-                <span className="lh-sm">Maximum out-of-pocket <br />on insurance policy</span>
-                <span>{paymentDetails?.amount_for_childer || '$40.00'}</span>
+                <span>No of Children</span> <span>{paymentDetails?.no_of_childer || '$00.00'}</span>
               </div>
               <hr />
               <div className="d-flex justify-content-between mt-2">
-                <span>Insurance Responsibility</span> <span>{paymentDetails?.customer_Date_Of_Booking || 'N/A'}</span>
+                <span className="lh-sm">Amount For Person<br /></span>
+                <span>{paymentDetails?.amount_for_person || '$00.00'}</span>
               </div>
               <div className="d-flex justify-content-between mt-2">
-                <span>Patient Balance</span> <span>$13.24</span>
+                <span className="lh-sm">Amount For Children <br /></span>
+                <span>{paymentDetails?.amount_for_childer || '$00.00'}</span>
               </div>
               <hr />
               <div className="d-flex justify-content-between mt-2">
-                <span>Total</span> <span className="text-success">{paymentDetails?.booking_amount || '$85.00'}</span>
+                <span>Date of Booking</span> <span>{paymentDetails?.customer_Date_Of_Booking || 'N/A'}</span>
+              </div>
+              <div className="d-flex justify-content-between mt-2">
+                <span>User Balance</span> <span>$6000</span>
+              </div>
+              <hr />
+              <div className="d-flex justify-content-between mt-2">
+                <span>Total</span> <span className="text-success">{paymentDetails?.booking_amount || '$00.00'}</span>
               </div>
             </div>
-            <div className="btn btn-success btn-lg btn-block" onClick={handleProceedToPayment}>
-              Pay the payment
-            </div>
+            <div className="btn btn-success btn-lg btn-block" onClick={generatePaymentPDF}>
+        Pay the payment
+      </div>
           </div>
         </div>
       </section>
+      <style>
+        {`
+       .booking-page-container {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        background-color: #f8f8f8;
+        color: #333;
+      }
+      
+      .booking-section {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      }
+      
+      /* Update the styling of the form elements */
+      .form-label {
+        font-weight: bold;
+      }
+      
+      .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      
+      /* Style the buttons */
+      .btn {
+        cursor: pointer;
+        border-radius: 5px;
+        padding: 10px;
+        font-weight: bold;
+      }
+      
+      .btn-success {
+        background-color: #28a745;
+        color: white;
+      }
+      
+      /* Style the table */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+      }
+      
+      th, td {
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+        text-align: left;
+      }
+      
+      th {
+        background-color: #f2f2f2;
+      }
+      
+      /* Additional customizations based on your preferences */
+      /* Feel free to add more styles here */
+      
+        `}
+      </style>
     </div>
   );
 }

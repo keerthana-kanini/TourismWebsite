@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { variables } from './Variable'; // Replace with the correct path to Variable.js
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify';
@@ -37,7 +37,7 @@ function UserLogin() {
           user_Name: username,
           user_Password: password,
         });
-
+  
         if (response.status === 200) {
           // Sign-in successful
           console.log('Sign-in successful');
@@ -47,7 +47,22 @@ function UserLogin() {
           setTimeout(() => {
             localStorage.removeItem('userToken');
             console.log('Token has been automatically deleted after 5 seconds.');
-          }, 5000);
+          }, 90000);
+  
+          // Fetch and store user ID
+          try {
+            const userIdResponse = await axios.get(`https://localhost:7125/api/Users/GetUserIdByUsername?username=${username}`);
+  
+            if (userIdResponse.status === 200) {
+              const userId = userIdResponse.data; // Assuming the response.data contains the user ID
+              localStorage.setItem('userId', userId);
+            } else {
+              console.error('Failed to fetch user ID:', userIdResponse.statusText);
+            }
+          } catch (error) {
+            console.error('Error occurred while fetching user ID:', error);
+          }
+  
           navigate('/home');
           // Optionally, you can redirect the user to a success page or do any other action here.
         } else {
@@ -59,6 +74,7 @@ function UserLogin() {
         console.error('Error occurred during sign-in:', error);
         toast.error('Error occurred during sign-in.');
       }
+    
     } else {
         // Sign-up functionality
         if (

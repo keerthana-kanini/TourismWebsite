@@ -48,9 +48,9 @@ const AgentPage = () => {
 
       <div className="card-container">
   {places.map((place) => {
-    const rating = roundToHalfStar(parseFloat(place.Agency_Rating)); // Parse the rating and round it to the nearest half-star
+    const rating = roundToHalfStar(parseFloat(place.agency_Rating)); // Parse the rating and round it to the nearest half-star
     return (
-      <div className="card" key={place.Agency_Id}>
+      <div className="card" key={place.agency_Id}>
         <img src={`https://localhost:7125/uploads/images/${place.tourImagePath}`} alt="" />
         <div className="info">
           <h3>{place.agency_Name}</h3>

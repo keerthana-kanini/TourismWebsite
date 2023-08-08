@@ -1,57 +1,102 @@
-import React, { useState } from 'react';
-import logo from './logo1.jpg.png';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useEffect } from 'react';
-import Navbar from './Header';
 import Header from './Navbar';
-import Accom from './Accom';
 
+const TourPac = () => {
+  const [isNavOpen, setNavOpen] = useState(false);
+  const [places, setPlaces] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredPlaces, setFilteredPlaces] = useState([]);
 
-const TourPac= () => {
-    const [isNavOpen, setNavOpen] = useState(false);
-    const [places, setPlaces] = useState([]);
-  
-    const toggleNav = () => {
-      setNavOpen((prevState) => !prevState);
-    };
-  
-    // Helper function to round the rating to the nearest half-star
-    const roundToHalfStar = (rating) => {
-      return Math.round(rating * 2) / 2;
-    };
-  
-    // Fetch places from the API and populate the places state
-    const fetchPlaces = async () => {
-      try {
-        const response = await axios.get('https://localhost:7125/api/Agency');
-        setPlaces(response.data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-  
-    useEffect(() => {
-      fetchPlaces(); // Call fetchPlaces to populate places state
-    }, []);
+  const toggleNav = () => {
+    setNavOpen((prevState) => !prevState);
+  };
 
-  
+  const roundToHalfStar = (rating) => {
+    return Math.round(rating * 2) / 2;
+  };
 
+  const fetchPlaces = async () => {
+    try {
+      const response = await axios.get('https://localhost:7125/api/Agency');
+      setPlaces(response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPlaces();
+  }, []);
+
+  useEffect(() => {
+    // Filter the places based on the search query
+    const filtered = places.filter(place =>
+      place.agency_Rating.toString().includes(searchQuery)
+    );
+    setFilteredPlaces(filtered);
+  }, [searchQuery, places]);
+
+  const handleBookClick = (agentId) => {
+    localStorage.setItem('selectedAgentId', agentId);
+    console.log('Selected agent ID:', agentId);
+  };
+
+  const handleSearch = () => {
+    const filtered = places.filter(place =>
+      place.agency_Rating.toString().includes(searchQuery)
+    );
+    setFilteredPlaces(filtered);
+  };
   return (
     <div>
-      <section>
-        <Header/>
-      </section>
+    <section>
+      <Header />
+    </section>
     <section className="feature" id="feature">
-    <h1 className="heading">Tour Packages</h1>
+      <h1 className="heading">Tour Packages</h1>
       <h3 className="title">See the most featured places</h3>
+      <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+  <input
+    type="text"
+    placeholder="Search by star rating"
+    value={searchQuery}
+    onChange={(e) => setSearchQuery(e.target.value)}
+    style={{
+      padding: '15px',
+      border: '1px solid #ccc',
+      borderRadius: '5px',
+      flex: '1',
+      fontSize: '18px',
+      maxWidth: '400px',
+      color: 'black'
+      
+    }}
+  />
+  <button
+    onClick={handleSearch}
+    style={{
+      backgroundColor: '#007bff',
+      color: 'white',
+      border: 'none',
+      padding: '15px 25px',
+      borderRadius: '5px',
+      cursor: 'pointer',
+      fontSize: '18px',
+      marginLeft: '10px'
+    }}
+  >
+    Search
+  </button>
+</div>
 
       <div className="card-container">
-  {places.map((place) => {
-    const rating = roundToHalfStar(parseFloat(place.Agency_Rating)); // Parse the rating and round it to the nearest half-star
-    return (
-      <div className="card" key={place.Agency_Id}>
-        <img src={`https://localhost:7125/uploads/images/${place.tourImagePath}`} alt="" />
-        <div className="info">
+        {(searchQuery ? filteredPlaces : places).map((place) => {
+          const rating = roundToHalfStar(parseFloat(place.agency_Rating));
+          return (
+            <div className="card" key={place.agency_Id}>
+              <img src={`https://localhost:7125/uploads/images/${place.tourImagePath}`} alt="" />
+              <div className="info">
           <h3>{place.agency_Name}</h3>
           {/* Assuming Agency_Rating is a number, we can display stars based on that */}
           <div className="stars">
@@ -67,7 +112,9 @@ const TourPac= () => {
           </p>
           {/* Display rate_for_day with the Indian Rupee symbol */}
           <p>₹{place.rate_for_day}</p>
-<a href={`/accomid/${place.agency_Id}`}><button className="btn">Visit now!</button></a>
+          <a href={`/accomid/${place.agency_Id}`} onClick={() => handleBookClick(place.agency_Id)}>
+                    <button className="btn">Visit now!</button>
+                </a>
  
         </div>
         
@@ -105,6 +152,7 @@ const TourPac= () => {
                 font-family: sans-serif;
                 letter-spacing: 1px;
                 font-weight: 300;
+                
             }
             body{
                 overflow-x: hidden;
@@ -890,6 +938,38 @@ const TourPac= () => {
           }
         
         } 
+        .search-container {
+          display: flex;
+          align-items: center;
+          justify-content: center; /* Center horizontally */
+          margin-bottom: 20px;
+        }
+    
+        .search-container input[type="text"] {
+          padding: 15px; /* Increase padding to make the textbox bigger */
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          flex: 1;
+          font-size: 18px; /* Increase font size */
+          max-width: 400px; /* Limit the maximum width */
+        }
+    
+        .search-button {
+          background-color: #007bff;
+          color: white;
+          border: none;
+          padding: 15px 25px; /* Increase padding to match the textbox */
+          border-radius: 5px;
+          cursor: pointer;
+          font-size: 18px; /* Increase font size */
+          margin-left: 10px;
+        }
+    
+        .search-button:hover {
+          background-color: #0056b3;
+        }
+        
+        
             `}
         </style>
         </div>

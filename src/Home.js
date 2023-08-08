@@ -103,18 +103,6 @@ const Home = () => {
           <h1>explore.</h1>
           <h3>its time to travel</h3>
           <div className="form-container">
-            <form action="">
-              <h3>search your destination</h3>
-              <span>location</span>
-              <input type="text" placeholder="place you want to visit" />
-              <span>guest members</span>
-              <input type="number" placeholder="how many people" />
-              <span>arrivals</span>
-              <input type="date" />
-              <span>leaving</span>
-              <input type="date" />
-              <input className="btn" type="submit" value="search" />
-            </form>
           </div>
         </div>
         

@@ -26,7 +26,7 @@ const Accom = ({ agencyId }) => {
   const [selectedAccommodation, setSelectedAccommodation] = useState(null);
 
   useEffect(() => {
-    const agencyIds = [1, 2,4]; // Pass multiple agency IDs as an array
+    const agencyIds = [1, 2,4,6]; // Pass multiple agency IDs as an array
     // Fetch data from the API using the agencyIds array
     Promise.all(
       agencyIds.map((id) =>

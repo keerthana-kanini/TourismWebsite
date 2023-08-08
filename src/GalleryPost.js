@@ -90,6 +90,21 @@ export default function GalleryPost() {
       </form>
     <style>
         {`
+    
+     .card-layout {
+       display: flex;
+       flex-wrap: wrap; 
+       justify-content: space-between;
+       gap: 20px; 
+     }
+     
+    
+     .card {
+       flex: 1;
+       max-width: 300px;
+       margin: 10px;
+     }
+     
         .admin-post-container {
             display: flex;
             flex-direction: column;
