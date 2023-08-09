@@ -47,7 +47,7 @@ function UserLogin() {
           setTimeout(() => {
             localStorage.removeItem('userToken');
             console.log('Token has been automatically deleted after 5 seconds.');
-          }, 90000);
+          }, 100000);
   
           // Fetch and store user ID
           try {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -32,16 +32,32 @@ import Success from './sample/Success';
 
 function App() {
   const agencyId = [1, 2,4,6];
+  const isuserauthincated=()=>{
+    const token =localStorage.getItem('userToken');
+    if(token){
+      return true;
+    }
+    return false;
+  }
   return (
     <Router>
       <div>
         <ToastContainer />
 
         <Routes>
-          <Route path="/home" element={<Home />} />
-          <Route path="/" element={<UserLogin />} />
+        <Route path="/" element={<UserLogin />} />
+          <Route path="/home" element={isuserauthincated()? <Home />:<Navigate to="/"/>} />
+          <Route path="/feedback" element={isuserauthincated()? <FeedBack/>:<Navigate to="/"/>} />
+          <Route path="/tourpac" element={isuserauthincated()? <TourPac/> :<Navigate to="/"/>} />
+          
+          <Route path="/accomid/:agencyId"  element={isuserauthincated()? <AccomId/> :<Navigate to="/"/>} />
+          <Route path="/booking" element={isuserauthincated()? <BookingPage/>:<Navigate to="/"/>} /> 
+         
+
+
+
           <Route path="/accom/:agencyId" element={<Accom agencyId={agencyId} />} />
-          <Route path="/accomid/:agencyId" element={<AccomId/>} />
+         
           <Route path="/adminsignin" element={<AdminSignin />} />
           <Route path="/agency-page" element={<AgencyPage />} />
           <Route path="/main" element={<Main />} />
@@ -49,20 +65,20 @@ function App() {
           <Route path="/sample" element={<Sample />} />
           <Route path="/agencyreg" element={<AgencyReg />} />
           <Route path="/approve" element={<Approve/>} />
-          <Route path="/feedback" element={<FeedBack/>} />
+          <Route path="/success" element={<Success/>} />
           <Route path="/navbar" element={<Header/>} />
           <Route path="/agentpage" element={<AgentPage/>} />
           <Route path="/agentpost" element={<AgentPost/>} />
           <Route path="/nav" element={<Navbar/>} />
-          <Route path="/tourpac" element={<TourPac/>} />
+        
           <Route path="/accompost" element={<AccomPost/>} />
           <Route path="/gallerypost" element={<GalleryPost/>} />
           <Route path="/accomfilter" element={<Accomfilter/>} />
-          <Route path="/booking" element={<BookingPage/>} />
+         
           <Route path="/admingall" element={<Admincard/>} />
           <Route path="/down" element={<Download/>} />
           <Route path="/model" element={<ModalContainer/>} />
-          <Route path="/success" element={<Success/>} />
+         
         </Routes>
       </div>
     </Router>

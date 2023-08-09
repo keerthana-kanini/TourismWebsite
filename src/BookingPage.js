@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { Link, useNavigate } from 'react-router-dom';
 import { jsPDF } from 'jspdf';
 import 'jspdf-autotable';
 
@@ -15,6 +16,7 @@ export default function BookingPage() {
   const [rateForDay, setRateForDay] = useState('$186.86');
   const agencystoredId = localStorage.getItem('selectedAgentId');
   const userstoredId = localStorage.getItem('userId');
+  const navigate = useNavigate();
   const generatePaymentPDF = () => {
     const doc = new jsPDF();
     doc.text('Payment Receipt', 15, 15);
@@ -41,8 +43,12 @@ export default function BookingPage() {
     });
 
     doc.save('payment_receipt.pdf');
-};
-
+    if (paymentDone) {
+      navigate('/Success');
+    } else {
+      console.log('Payment is not done yet.');
+    }
+  };
 
 
   useEffect(() => {
@@ -93,10 +99,12 @@ export default function BookingPage() {
       const data = await response.json();
       console.log('Payment Details:', data); // Log the payment details to the console
       setPaymentDetails(data);
+      setPaymentDone(true);
     } catch (error) {
       console.error('Error while making API request:', error);
     }
   };
+  const [paymentDone, setPaymentDone] = useState(false);
 
   return (
     <div className="booking-page-container">
