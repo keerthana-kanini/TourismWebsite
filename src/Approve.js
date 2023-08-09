@@ -93,11 +93,25 @@ export default function Approve() {
       await axios.put(`https://localhost:7125/api/AdminRegisters/UpdateApprovalStatus/${id}`, "Declined", {
         headers: { 'Content-Type': 'application/json' }
       });
-      fetchTravelAgents();
+  
+      // Update the status of the declined agent in the travelAgents state
+      setTravelAgents(prevAgents =>
+        prevAgents.map(agent =>
+          agent.agent_Id === id ? { ...agent, status: 'Declined' } : agent
+        )
+      );
+  
+      // Find the declined agent from travelAgents and add it to approvedAgents
+      const declinedAgent = travelAgents.find(agent => agent.agent_Id === id);
+      if (declinedAgent) {
+        setApprovedAgents(prevApprovedAgents => [...prevApprovedAgents, declinedAgent]);
+      }
     } catch (error) {
       console.error('Error updating approval status:', error);
     }
   };
+  
+  
 
   const renderTravelAgents = () => {
     if (travelAgents.length === 0) {
@@ -136,26 +150,27 @@ export default function Approve() {
       <center><h1>Travel Agents Request</h1></center><br></br>
       <div id="travelAgentsContainer">{renderTravelAgents()}</div>
       <div>
-      <h1>Approved Agents</h1>
-      <div className="card-container">
-        {approvedAgents &&
-          approvedAgents.map((agent) => (
-            <div key={agent.Agent_Id} className="card">
-              <h2>{agent.agent_Name}</h2>
-              <p>Status: {agent.status}</p>
-              {agent.agencies && (
-                <div>
-                  <p>Agencies:</p>
-                  <ul>
-                    {agent.agencies.map((agency) => (
-                      <li key={agency.agency_Id}>{agency.agency_Name}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-          ))}
+     <h1>Approved Agents</h1>
+<div className="card-container">
+  {approvedAgents &&
+    approvedAgents.map((agent) => (
+      <div key={agent.agent_Id} className="card">
+        <h2>{agent.agent_Name}</h2>
+        <p>Status: {agent.status}</p>
+        {agent.agencies && (
+          <div>
+            <p>Agencies:</p>
+            <ul>
+              {agent.agencies.map((agency) => (
+                <li key={agency.agency_Id}>{agency.agency_Name}</li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
+    ))}
+</div>
+
     </div>
     <br/>
    <div>

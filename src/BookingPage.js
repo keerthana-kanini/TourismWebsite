@@ -43,11 +43,7 @@ export default function BookingPage() {
     });
 
     doc.save('payment_receipt.pdf');
-    if (paymentDone) {
-      navigate('/Success');
-    } else {
-      console.log('Payment is not done yet.');
-    }
+   
   };
 
 
@@ -103,7 +99,13 @@ export default function BookingPage() {
     } catch (error) {
       console.error('Error while making API request:', error);
     }
+    if (paymentDone) {
+      navigate('/Success');
+    } else {
+      console.log('Payment is not done yet.');
+    }
   };
+  
   const [paymentDone, setPaymentDone] = useState(false);
 
   return (
@@ -225,9 +227,13 @@ export default function BookingPage() {
                 <span>Total</span> <span className="text-success">{paymentDetails?.booking_amount || '$00.00'}</span>
               </div>
             </div>
-            <div className="btn btn-success btn-lg btn-block" onClick={generatePaymentPDF}>
+            <div className="btn btn-success btn-lg btn-block" onClick={handleProceedToPayment}>
         Pay the payment
+      </div><br></br><br></br>
+      <div className="btn btn-info btn-lg btn-block" onClick={generatePaymentPDF}>
+        Download Pdf
       </div>
+      
           </div>
         </div>
       </section>
